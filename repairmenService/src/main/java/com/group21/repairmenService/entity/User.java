@@ -24,8 +24,6 @@ public class User {
 
     private String phone;
 
-    private String location;
-
     private UserRole role;
 
 
@@ -33,7 +31,9 @@ public class User {
         UserDto userDto = new UserDto();
         userDto.setId(id);
         userDto.setName(name);
+        userDto.setLastname(lastname);
         userDto.setEmail(email);
+        userDto.setPhone(phone);
         userDto.setRole(role);
 
         return userDto;

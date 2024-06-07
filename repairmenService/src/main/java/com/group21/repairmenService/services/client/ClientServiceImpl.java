@@ -1,9 +1,6 @@
 package com.group21.repairmenService.services.client;
 
-import com.group21.repairmenService.dto.AdDTO;
-import com.group21.repairmenService.dto.AdDetailsForClientDTO;
-import com.group21.repairmenService.dto.ReservationDTO;
-import com.group21.repairmenService.dto.ReviewDTO;
+import com.group21.repairmenService.dto.*;
 import com.group21.repairmenService.entity.Ad;
 import com.group21.repairmenService.entity.Reservation;
 import com.group21.repairmenService.entity.Review;
@@ -17,6 +14,7 @@ import com.group21.repairmenService.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +32,6 @@ public class ClientServiceImpl implements ClientService{
     @Autowired
     ReviewRepository reviewRepository;
 
-
     @Autowired
     private ReservationRepository reservationRepository;
 
@@ -42,8 +39,21 @@ public class ClientServiceImpl implements ClientService{
         return adRepository.findAll().stream().map(Ad::getAdDto).collect(Collectors.toList());
     }
 
+    public List<AdDTO> getAllAdsHomePage(){
+        return adRepository.findAll().stream().map(Ad::getAdDto).collect(Collectors.toList());
+    }
+
     public List<AdDTO> searchAdByName(String name){
         return adRepository.findAllByServiceNameContaining(name).stream().map(Ad::getAdDto).collect(Collectors.toList());
+    }
+
+    public List<AdDTO> searchAdByNameHomePage(String name){
+        return adRepository.findAllByServiceNameContaining(name).stream().map(Ad::getAdDto).collect(Collectors.toList());
+    }
+
+    public UserDto getUserInfoById(Long userId){
+        Optional<User> optionalUser = userRepository.findById(userId);
+        return optionalUser.map(User::getDto).orElse(null);
     }
 
     public boolean bookService(ReservationDTO reservationDTO){
@@ -81,6 +91,18 @@ public class ClientServiceImpl implements ClientService{
         return adDetailsForClientDTO;
     }
 
+    public AdDetailsForClientDTO getAdDetailsByAdIdHome(Long adId) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        AdDetailsForClientDTO adDetailsForClientDTO = new AdDetailsForClientDTO();
+        if (optionalAd.isPresent()) {
+            adDetailsForClientDTO.setAdDTO(optionalAd.get().getAdDto());
+
+            List<Review> reviewList = reviewRepository.findAllByAdId(adId);
+            adDetailsForClientDTO.setReviewDTOList(reviewList.stream().map(Review::getDto).collect(Collectors.toList()));
+        }
+        return adDetailsForClientDTO;
+    }
+
     public List<ReservationDTO> getAllBookingByUserId(Long userId){
         return reservationRepository.findAllByUserId(userId).stream().map(Reservation::getReservationDTO).collect(Collectors.toList());
     }
@@ -110,5 +132,42 @@ public class ClientServiceImpl implements ClientService{
         }
 
         return false;
+    }
+
+    public boolean updateAd(Long adId, AdDTO adDTO) throws IOException {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        if(optionalAd.isPresent()){
+            Ad ad = optionalAd.get();
+
+            ad.setServiceName(adDTO.getServiceName());
+            ad.setDescription(adDTO.getDescription());
+            ad.setPrice(adDTO.getPrice());
+
+            if(adDTO.getImg() != null){
+                ad.setImg(adDTO.getImg().getBytes());
+            }
+
+            adRepository.save(ad);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean updateUserInfo(Long userId, UserDto userDto) throws IOException {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+
+            user.setName(userDto.getName());
+            user.setLastname(userDto.getLastname());
+            user.setEmail(userDto.getEmail());
+            user.setPhone(userDto.getPhone());
+
+            userRepository.save(user);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

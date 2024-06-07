@@ -1,6 +1,8 @@
 package com.group21.repairmenService.entity;
 
 import com.group21.repairmenService.dto.AdDTO;
+import com.group21.repairmenService.enums.AdStatus;
+import com.group21.repairmenService.enums.ReviewStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -18,6 +20,8 @@ public class Ad {
     private String serviceName;
     private String description;
     private Double price;
+
+    private AdStatus status = AdStatus.PENDING;
 
     @Lob
     @Column(columnDefinition = "longblob")
@@ -37,6 +41,7 @@ public class Ad {
         adDTO.setPrice(price);
         adDTO.setCompanyName(user.getName());
         adDTO.setReturnedImg(img);
+        adDTO.setAdStatus(this.status);
 
         return adDTO;
     }

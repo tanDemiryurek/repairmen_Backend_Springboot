@@ -1,6 +1,8 @@
 package com.group21.repairmenService.dto;
 
 
+import com.group21.repairmenService.enums.AdStatus;
+import com.group21.repairmenService.enums.ReviewStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Lob;
 import lombok.Data;
@@ -24,4 +26,7 @@ public class AdDTO {
     private Long userId;
 
     private String companyName;
+
+    private AdStatus adStatus;
+
 }
