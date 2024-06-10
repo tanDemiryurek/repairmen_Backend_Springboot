@@ -2,6 +2,7 @@ package com.group21.repairmenService.services.admin;
 
 import com.group21.repairmenService.dto.AdDTO;
 import com.group21.repairmenService.entity.Ad;
+import com.group21.repairmenService.entity.Reservation;
 import com.group21.repairmenService.enums.AdStatus;
 import com.group21.repairmenService.repository.AdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class AdminServiceImpl implements AdminService {
     private AdRepository adRepository;
 
     @Override
-    public List<AdDTO> getPendingAds() {
-        List<Ad> ads = adRepository.findByStatus(AdStatus.PENDING);
+    public List<AdDTO> getAllAds() {
+        List<Ad> ads = adRepository.findAll();
         return ads.stream().map(Ad::getAdDto).collect(Collectors.toList());
     }
 
@@ -35,4 +36,5 @@ public class AdminServiceImpl implements AdminService {
         ad.setStatus(AdStatus.REJECTED);
         adRepository.save(ad);
     }
+
 }

@@ -5,6 +5,7 @@ import com.group21.repairmenService.entity.Ad;
 import com.group21.repairmenService.entity.Reservation;
 import com.group21.repairmenService.entity.Review;
 import com.group21.repairmenService.entity.User;
+import com.group21.repairmenService.enums.AdStatus;
 import com.group21.repairmenService.enums.ReservationStatus;
 import com.group21.repairmenService.enums.ReviewStatus;
 import com.group21.repairmenService.repository.AdRepository;
@@ -35,12 +36,16 @@ public class ClientServiceImpl implements ClientService{
     @Autowired
     private ReservationRepository reservationRepository;
 
-    public List<AdDTO> getAllAds(){
-        return adRepository.findAll().stream().map(Ad::getAdDto).collect(Collectors.toList());
+    public List<AdDTO> getAllAdsByStatus(){
+        return adRepository.findByStatus(AdStatus.APPROVED).stream().map(Ad::getAdDto).collect(Collectors.toList());
     }
-
+/*
     public List<AdDTO> getAllAdsHomePage(){
         return adRepository.findAll().stream().map(Ad::getAdDto).collect(Collectors.toList());
+    }
+*/
+    public List<AdDTO> getAllAdsHomePagebyStatus() {
+        return adRepository.findByStatus(AdStatus.APPROVED).stream().map(Ad::getAdDto).collect(Collectors.toList());
     }
 
     public List<AdDTO> searchAdByName(String name){

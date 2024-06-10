@@ -23,13 +23,13 @@ public class ClientController {
         return ResponseEntity.ok(clientService.getAdDetailsByAdIdHome(adId));
     }
     @GetMapping("/client/ads")
-    public ResponseEntity<?> getAllAds(){
-        return ResponseEntity.ok(clientService.getAllAds());
+    public ResponseEntity<?> getAllAdsByStatus(){
+        return ResponseEntity.ok(clientService.getAllAdsByStatus());
     }
 
     @GetMapping("/home")
     public ResponseEntity<?> getAllAdsHomePage(){
-        return ResponseEntity.ok(clientService.getAllAdsHomePage());
+        return ResponseEntity.ok(clientService.getAllAdsHomePagebyStatus());
     }
 
     @GetMapping("/client/search/{name}")

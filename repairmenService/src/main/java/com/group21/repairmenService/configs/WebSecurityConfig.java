@@ -29,8 +29,7 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/authenticate","/api/home","/api/home/**", "/api/home-detailedAd/**", "/company/sign-up", "/client/sign-up", "/ads", "/search/{services}", "/api/client/ads/**", "/api/client/my-bookings/**","/api/client/profile/**", "/api/client/book-service/**", "/h2-console/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/authenticate","/api/home","/api/home/**", "/api/home-detailedAd/**", "/company/sign-up", "/client/sign-up", "/ads", "/search/{services}", "/api/client/ads/**", "/api/client/my-bookings/**","/api/client/profile/**", "/api/client/book-service/**", "/h2-console/**", "/api/admin/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

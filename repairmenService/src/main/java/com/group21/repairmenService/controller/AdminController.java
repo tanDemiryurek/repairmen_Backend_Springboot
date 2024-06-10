@@ -15,9 +15,9 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @GetMapping("/pending-ads")
-    public ResponseEntity<List<AdDTO>> getPendingAds() {
-        return ResponseEntity.ok(adminService.getPendingAds());
+    @GetMapping("all-ads")
+    public ResponseEntity<List<AdDTO>> getAllAds() {
+        return ResponseEntity.ok(adminService.getAllAds());
     }
 
     @PostMapping("/approve-ad/{adId}")

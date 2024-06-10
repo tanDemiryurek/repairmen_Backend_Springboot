@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ClientService {
 
-    List<AdDTO> getAllAds();
+    List<AdDTO> getAllAdsByStatus();
     List<AdDTO> searchAdByName(String name);
 
     boolean bookService(ReservationDTO reservationDTO);
@@ -26,5 +26,8 @@ public interface ClientService {
 
     List<AdDTO> searchAdByNameHomePage(String name);
 
-    List<AdDTO> getAllAdsHomePage();
+//    List<AdDTO> getAllAdsHomePage();
+
+    List<AdDTO> getAllAdsHomePagebyStatus();
+
 }
