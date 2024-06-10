@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthServiceImpl implements AuthService{
 
@@ -44,5 +46,23 @@ public class AuthServiceImpl implements AuthService{
         user.setRole(UserRole.COMPANY);
 
         return userRepository.save(user).getDto();
+    }
+
+    public boolean changePassword(Long userId, String verifyPassword, String newPassword) {
+
+       Optional<User> user = userRepository.findById(userId);
+       if(!user.isPresent()){
+           throw new RuntimeException("User not found!!!.");
+       }else {
+           BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+           User  actualUser = user.get();
+           if(encoder.matches(verifyPassword, actualUser.getPassword())){
+               String newEncryptedPassword = encoder.encode(newPassword);
+               actualUser.setPassword(newEncryptedPassword);
+               userRepository.save(actualUser);
+               return true;
+           }
+       }
+       return false;
     }
 }

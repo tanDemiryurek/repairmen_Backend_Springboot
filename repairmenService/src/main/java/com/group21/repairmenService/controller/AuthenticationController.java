@@ -6,6 +6,7 @@ import com.group21.repairmenService.dto.UserDto;
 import com.group21.repairmenService.entity.User;
 import com.group21.repairmenService.repository.UserRepository;
 import com.group21.repairmenService.services.authentication.AuthService;
+import com.group21.repairmenService.services.authentication.AuthServiceImpl;
 import com.group21.repairmenService.services.jwt.UserDetailsServiceImpl;
 import com.group21.repairmenService.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -98,5 +100,13 @@ public class AuthenticationController {
         response.addHeader("Access-Control-Allow-Headers", "Authorization," +
                 "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept, X-Custom-header");
         response.addHeader(HEADER_STRING, TOKEN_PREFIX+jwt);
+    }
+
+    @PostMapping({"/api/client/profile/change-password/{userId}/{verifyPassword}/{newPassword}"})
+    public ResponseEntity<?> changePassword(@PathVariable("userId") Long userId, @PathVariable("verifyPassword") String verifyPassword, @PathVariable("newPassword") String newPassword){
+        if(authService.changePassword(userId, verifyPassword, newPassword)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NON_AUTHORITATIVE_INFORMATION);
     }
 }

@@ -8,4 +8,5 @@ public interface AuthService {
     Boolean presentByEmail(String email);
 
     UserDto signupCompany(SignupRequestDTO signupRequestDTO);
+    boolean changePassword(Long userId, String verifyPassword, String newPassword);
 }
